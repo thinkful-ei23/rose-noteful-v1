@@ -2,14 +2,17 @@
 
 // Load array of notes
 const express = require('express');
-const mogran = require('morgan');
+const morgan = require('morgan');
 const data = require('./db/notes');
 const app = express();
-app.use(mogran('dev'));
+app.use(morgan('dev'));
 
 console.log('Hello Noteful!');
 
 // INSERT EXPRESS APP CODE HERE...
+//handle static files
+app.use(express.static('public'));
+
 app.get('/api/notes', (req, res) => {
   const query = req.query; 
   let list = data;
