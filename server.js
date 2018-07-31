@@ -34,10 +34,17 @@ app.get('/api/notes', (req, res, next) => {
 });  
 
 
-app.get('/api/notes/:id', (req, res) => {
-  let id = req.params.id; 
-  let note = data.find(note => note.id === parseInt(id));
-  res.json(note);
+app.get('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params;
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err); 
+    }
+    res.json(item);
+  });
+  // let id = req.params.id; 
+  // let note = data.find(note => note.id === parseInt(id));
+  // res.json(note);
 });
 
 app.get('/boom', (req, res, next) => {
