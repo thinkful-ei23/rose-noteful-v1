@@ -21,16 +21,18 @@ console.log('Hello Noteful!');
 //handle static files 
 app.use(express.static('public'));
 
-app.get('/api/notes', (req, res) => {
-  const query = req.query; 
-  let list = data;
-  
-  if(query.searchTerm) {
-    list = list.filter(note => note.title.includes(query.searchTerm)); 
-  }
-  res.json(list);
-  
-});
+app.get('/api/notes', (req, res, next) => {
+  const { searchTerm } = req.query; 
+
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); 
+    }
+    res.json(list);
+  });
+
+});  
+
 
 app.get('/api/notes/:id', (req, res) => {
   let id = req.params.id; 
