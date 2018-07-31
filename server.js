@@ -2,8 +2,10 @@
 
 // Load array of notes
 const express = require('express');
+const mogran = require('morgan');
 const data = require('./db/notes');
 const app = express();
+app.use(mogran('dev'));
 
 console.log('Hello Noteful!');
 
@@ -16,6 +18,7 @@ app.get('/api/notes', (req, res) => {
     list = list.filter(note => note.title.includes(query.searchTerm)); 
   }
   res.json(list);
+  
 });
 
 app.get('/api/notes/:id', (req, res) => {
