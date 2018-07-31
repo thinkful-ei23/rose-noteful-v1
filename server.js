@@ -7,7 +7,9 @@ const app = express();
 
 //require config module 
 const { PORT } = require('./config');
+const { logger } = require('./middleware/logger');
 
+app.use(logger);
 
 console.log('Hello Noteful!');
 
