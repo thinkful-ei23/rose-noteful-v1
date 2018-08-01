@@ -1,11 +1,13 @@
 'use strict';
 
+//simDB = Simple In-Memory Database
+
 const data = require('../db/notes');
-const simDB = require('../db/simDB');
-const notes = simDB.initialize(data);
+const simDB = require('../db/simDB'); //add simDB to app
+const notes = simDB.initialize(data); //add simDB to app 
 
 // GET Notes with search
-notes.filter('boring', (err, list) => {
+notes.filter('Lady Gaga', (err, list) => {
   if (err) {
     console.error(err);
   }
@@ -41,6 +43,7 @@ notes.update(1005, updateObj, (err, item) => {
   }
 });
 
+//create new note using .create() method
 notes.create({
   'title': 'dogs are better than cats!',
   'content': 'stuuuuuuuuuuuuf about dogs!',
@@ -54,6 +57,7 @@ notes.create({
   }
 });
 
+//delete a new note using the .delete() method
 notes.delete(1010, (err, item) => {
   if (err) {
     console.log(err);
@@ -63,3 +67,4 @@ notes.delete(1010, (err, item) => {
     console.log('not found');
   }
 });
+
