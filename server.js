@@ -2,17 +2,18 @@
 
 // Load array of notes
 const express = require('express');
-
-//create Express app 
-const app = express();
+const morgan = require('morgan');
 
 //require config module 
 const { PORT } = require('./config');
 const { logger } = require('./middleware/logger');
-const itemsRouter = require('./router/notes.router');
+const notesRouter = require('./router/notes.router');
+
+//create Express app 
+const app = express();
 
 //log all reqs
-app.use(logger);
+app.use(morgan('dev'));
 
 console.log('Hello Noteful!');
 
@@ -25,7 +26,7 @@ app.use(express.static('public'));
 //parse request body 
 //express.json middleware parses incoming reqs that contain json and makes available on req body
 app.use(express.json()); 
-app.use(itemsRouter);
+app.use('/api', notessRouter);
 
 
 //code from today's curriculum: Express Error-Handling Middleware

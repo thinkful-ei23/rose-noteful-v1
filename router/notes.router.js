@@ -9,7 +9,7 @@ const simDB = require('../db/simDB');
 const notes = simDB.initialize(data);
 
 //PUT notes by ID
-router.put('/api/notes/:id', (req, res, next) => {
+router.put('/notes/:id', (req, res, next) => {
   const id = req.params.id; 
   //validate input
   const updateObj = {};
@@ -35,7 +35,7 @@ router.put('/api/notes/:id', (req, res, next) => {
 });
 
 //update GET /api/notes endpoint with the notes.filter query
-router.get('/api/notes', (req, res, next) => {
+router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query; 
 
   notes.filter(searchTerm, (err, list) => {
@@ -47,7 +47,7 @@ router.get('/api/notes', (req, res, next) => {
 
 });  
 
-router.get('/api/notes/:id', (req, res, next) => {
+router.get('/notes/:id', (req, res, next) => {
   const { id } = req.params;
   notes.find(id, (err, item) => {
     if (err) {
@@ -59,7 +59,7 @@ router.get('/api/notes/:id', (req, res, next) => {
 });
 
 //POST endpoint
-router.post('/api/notes', (req, res, next) => {
+router.post('/notes', (req, res, next) => {
   const { title, content} = req.body;
   const newItem = { title, content };
   //validate input
@@ -79,15 +79,13 @@ router.post('/api/notes', (req, res, next) => {
   });
 });
 
-router.delete('/api/notes/:id', (req, res, next) => {
+router.delete('/notes/:id', (req, res, next) => {
   const id = req.params.id;
   notes.delete(id, err => {
     if(err) { 
       return next(err);
-    } else {
-      res.status(204).send('No Content');
-      next();
     }
+    res.sendStatus(204);
   });
 });
 
