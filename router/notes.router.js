@@ -1,29 +1,63 @@
 'use strict';
 
 const express = require('express');
-
 const router = express.Router();
 
 //load array of notes from db file
-const data = require('./db/notes');
+const data = require('../db/notes');
+const simDB = require('../db/simDB');
+const notes = simDB.initialize(data);
 
+//PUT notes by ID
+router.put('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id; 
+  //validate input
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
 
-router.get('/api/notes', (req, res) => {
-  const query = req.query; 
-  let list = data;
-  
-  if(query.searchTerm) {
-    list = list.filter(note => note.title.includes(query.searchTerm)); 
-  }
-  res.json(list);
-  
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if(err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
+
 });
 
-router.get('/api/notes/:id', (req, res) => {
-  let id = req.params.id; 
-  let note = data.find(note => note.id === parseInt(id));
-  res.json(note);
+//update GET /api/notes endpoint with the notes.filter query
+router.get('/api/notes', (req, res, next) => {
+  const { searchTerm } = req.query; 
+
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); //goes to error handler
+    }
+    res.json(list); //responds with filtered array
+  });
+
+});  
+
+router.get('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params;
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err); 
+    }
+    res.json(item);
+  });
+
 });
+
 
 module.exports = router;
 
