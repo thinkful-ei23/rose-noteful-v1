@@ -91,7 +91,7 @@ router.post('/notes', (req, res, next) => {
   const newItem = { title, content };
   //validate input
   if(!newItem.title || !newItem.content) {
-    const err = new Error('Missing title or content in request body');
+    const err = new Error('Missing `title` in request body');
     err.status = 400; 
     return next(err);
   }
