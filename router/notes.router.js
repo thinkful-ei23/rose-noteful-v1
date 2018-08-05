@@ -11,9 +11,16 @@ const notes = simDB.initialize(data);
 //PUT notes by ID
 router.put('/notes/:id', (req, res, next) => {
   const id = req.params.id; 
+  const { title, content } = req.body;
   //validate input
   const updateObj = {};
   const updateFields = ['title', 'content'];
+
+  if (!title) {
+    const err = new Error('Missing `title` in request body');
+    err.status = 400;
+    return next(err);
+  }
 
   updateFields.forEach(field => {
     if (field in req.body) {

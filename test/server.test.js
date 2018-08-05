@@ -27,9 +27,9 @@ describe('Noteful App', function () {
       .then(instance => server = instance);
   });
 
-  after(function () {
-    return server.stopServer();
-  });
+  // after(function () {    ***Why is this code in the solution?*** 
+  //   return server.stopServer();
+  // });
 
   describe('Static server', function () {
 
