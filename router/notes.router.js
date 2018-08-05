@@ -43,13 +43,14 @@ router.put('/notes/:id', (req, res, next) => {
 
 //update GET /api/notes endpoint with the notes.filter query
 router.get('/notes', (req, res, next) => {
-  const { searchTerm } = req.query; 
+  const { searchTerm = ''} = req.query; 
+  //const searchTerm = req.query.searchTerm || ''
   notes.filter(searchTerm)
     .then(list => {
       if(list) {
-        res.json(list);
+        res.json(list); 
       } 
-    }) //no next() bcuz no reason list doesn't exist 
+    }) //no next() bcuz no reason list doesn't exist  (could be notes =[])
     .catch(err => {
       next(err);
     });
